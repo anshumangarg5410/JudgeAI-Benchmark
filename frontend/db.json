@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "email": "admin@hackmania.io",
+      "password": "password123",
+      "name": "Admin User",
+      "role": "admin"
+    }
+  ],
+  "models": [
+    {
+      "id": "gpt-4o",
+      "name": "GPT-4o",
+      "provider": "OpenAI",
+      "type": "base",
+      "endpoint": "https://api.openai.com/v1",
+      "apiKeyVar": "OPENAI_API_KEY",
+      "notes": "Standard base model"
+    },
+    {
+      "id": "gpt-4o-ft-hackmania",
+      "name": "Hackmania Fine-tuned",
+      "provider": "OpenAI",
+      "type": "fine-tuned",
+      "endpoint": "https://api.openai.com/v1",
+      "apiKeyVar": "OPENAI_API_KEY",
+      "notes": "Custom fine-tuned model"
+    }
+  ],
+  "settings": [
+    {
+      "backendUrl": "http://localhost:8000",
+      "authToken": "fake-token-123",
+      "evalEndpoint": "/api/evaluate",
+      "modelsEndpoint": "/api/models",
+      "regressionThreshold": 0.05,
+      "latencyWarning": 2000,
+      "errorSpikeThreshold": 0.1,
+      "defaultScorer": "cosine",
+      "judgeModel": "gpt-4o",
+      "evalLanguage": "en",
+      "asyncBatch": true
+    }
+  ],
+  "runs": []
+}
