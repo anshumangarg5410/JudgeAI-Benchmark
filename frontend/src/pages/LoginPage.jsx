@@ -20,7 +20,7 @@ export default function LoginPage() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Try demo@modelprobe.ai / demo1234');
+      setError(err.message || 'Invalid credentials. Try demo@judgeai.io / demo1234');
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ export default function LoginPage() {
       <div className="login-container">
         <div className="login-header">
           <span className="login-logo">⚡</span>
-          <div className="login-brand">ModelProbe</div>
+          <div className="login-brand">JudgeAI-Benchmark</div>
           <div className="login-tagline">
             AI Model Regression Testing Platform
           </div>
@@ -81,7 +81,7 @@ export default function LoginPage() {
         )}
 
         <div className="login-footer">
-          © 2025 ModelProbe · <a href="#">Privacy</a> · <a href="#">Terms</a>
+          © 2026 JudgeAI-Benchmark · <a href="#">Privacy</a> · <a href="#">Terms</a>
         </div>
       </div>
     </div>

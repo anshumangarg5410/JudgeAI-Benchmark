@@ -1,6 +1,6 @@
-# 🚀 HACKMANIA: AI Benchmarking & Evaluation Dashboard
+# 🚀 JudgeAI-Benchmark: AI Benchmarking & Evaluation Dashboard
 
-**HACKMANIA** is a high-performance, full-stack platform designed to benchmark and evaluate Large Language Models (LLMs). It provides a side-by-side comparison between Base and Fine-Tuned models using an automated "LLM-as-a-Judge" architecture.
+**JudgeAI-Benchmark** is a high-performance, full-stack platform designed to benchmark and evaluate Large Language Models (LLMs). It provides a side-by-side comparison between Base and Fine-Tuned models using an automated "LLM-as-a-Judge" architecture.
 
 ![Dashboard Preview](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
 ![Tech Stack](https://img.shields.io/badge/Tech-MERN%20+%20Python-blue?style=for-the-badge)
@@ -106,4 +106,4 @@ We are a group of developers dedicated to building transparent and actionable AI
 ---
 
 ## 📄 License
-Project created for **HACKMANIA**. All rights reserved. 2026.
+Project created for **JudgeAI-Benchmark**. All rights reserved. 2026.

@@ -33,8 +33,8 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <span className="sidebar-logo-icon">⚡</span>
-        ModelProbe
+        <span className="sidebar-logo-icon">⚖️</span>
+        JudgeAI-Benchmark
       </div>
 
       <div className="sidebar-section">Navigation</div>

@@ -91,7 +91,7 @@ export default function LoginForm({ onSubmit, loading }) {
         }}
       >
         <strong style={{ color: 'var(--accent-sky)' }}>Demo</strong>&nbsp;
-        demo@modelprobe.ai &nbsp;/&nbsp; demo1234
+        demo@judgeai.io &nbsp;/&nbsp; demo1234
       </div>
     </form>
   );
