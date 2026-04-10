@@ -8,7 +8,7 @@ def evaluate(model_func, test_cases):
         total = len(test_cases[category])
 
         for question, expected in test_cases[category]:
-            output = model_func(question).lower().strip()
+            output = model_func(question).lower()
 
             if "poor" in output or "incorrect" in output:
                 continue

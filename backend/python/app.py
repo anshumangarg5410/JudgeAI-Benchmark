@@ -1,7 +1,7 @@
 import streamlit as st
-from models import base_model, fine_tuned_model
-from evaluator import evaluate
-from test_case import test_cases
+from HACKMANIA.backend.python.models import base_model, fine_tuned_model
+from HACKMANIA.backend.python.evaluator import evaluate
+from HACKMANIA.backend.python.test_case import test_cases
 
 st.title("LLM Regression Testing Tool")
 
