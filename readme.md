@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # 🚀 JudgeAI-Benchmark: AI Benchmarking & Evaluation Dashboard
+=======
+# 🚀 JudgeAI-Benchmark - AI Benchmarking & Evaluation Dashboard
+>>>>>>> 95fade70da20994c72d6252d6e9f3bc3132c1660
 
 **JudgeAI-Benchmark** is a high-performance, full-stack platform designed to benchmark and evaluate Large Language Models (LLMs). It provides a side-by-side comparison between Base and Fine-Tuned models using an automated "LLM-as-a-Judge" architecture.
 
@@ -89,20 +93,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
----
-
-## 👥 The Team
-
-We are a group of developers dedicated to building transparent and actionable AI evaluation tools.
-
-| Name | Role |
-| :--- | :--- |
-| **Anshuman Garg** | Project Lead & Full-Stack Architect |
-| **Navdeesh Kashyap** | Backend & Database Design |
-| **Rohan Sharma** | Frontend UI/UX Specialist |
-| **Reetik Kumar** | AI Engine & Prompt Engineering |
-
 ---
 
 ## 📄 License
