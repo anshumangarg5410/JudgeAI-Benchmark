@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LLM Regression Tool</title>
+</head>
+<body>
+
+<h1>LLM Regression Tool</h1>
+
+<input id="question" placeholder="Enter question">
+<button onclick="sendQuestion()">Run</button>
+
+<h3>Base Model:</h3>
+<p id="base">Waiting...</p>
+
+<h3>Fine-tuned Model:</h3>
+<p id="fine">Waiting...</p>
+
+<script>
+async function sendQuestion() {
+    let q = document.getElementById("question").value;
+
+    document.getElementById("base").innerText = "Loading...";
+    document.getElementById("fine").innerText = "Loading...";
+
+    try {
+        let res = await fetch("http://127.0.0.1:5000/evaluate", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({question: q})
+        });
+
+        let data = await res.json();
+
+        document.getElementById("base").innerText = data.base;
+        document.getElementById("fine").innerText = data.fine;
+
+    } catch (error) {
+        console.error(error);
+        alert("Error connecting to server");
+    }
+}
+</script>
+
+</body>
+</html>
