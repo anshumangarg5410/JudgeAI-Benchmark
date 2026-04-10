@@ -16,6 +16,18 @@
 
 ---
 
+## 📸 Visual Tour
+
+### **Interactive Analytics Dashboard**
+![Dashboard Preview](docs/dashboard.png)
+*Real-time performance metrics, accuracy charts, and skill-based regression analysis.*
+
+### **Side-by-Side Evaluation**
+![Run Tests Preview](docs/run_tests.png)
+*Compare model responses in real-time with an automated AI Judge grading every output.*
+
+---
+
 ## 🚀 Core Features
 
 ### 1. **Automated Evaluation (LLM-as-a-Judge)**
