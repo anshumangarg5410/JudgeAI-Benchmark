@@ -65,12 +65,20 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 ## 🏗 System Architecture
 
 ```mermaid
-graph LR
-    User([Developer]) --> UI[React Frontend]
-    UI -- "JWT Auth" --> Node[Node/Express API]
-    Node <--> DB[(MongoDB Atlas)]
-    Node <--> Py[Python Intelligence]
-    Py <--> Ollama[Ollama LLM Runner]
+graph TD
+    User([Developer/Judge]) -->|Interaction| UI[React Frontend]
+    UI <-->|REST API + JWT Auth| Node[Node.js Express API]
+    
+    subgraph Data Layer
+        Node <-->|Persistence| DB[(MongoDB Atlas)]
+    end
+    
+    subgraph AI Intelligence Layer
+        Node <-->|Task Delegation| Py[Python Flask Microservice]
+        Py <-->|Model Execution| Ollama[Ollama Runner]
+        Ollama --- M1(TinyLlama)
+        Ollama --- M2(Mistral)
+    end
 ```
 
 ---
