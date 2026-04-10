@@ -1,0 +1,90 @@
+.dashboard-charts-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.dashboard-tables-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 0.2rem;
+  border-bottom: 1px solid var(--border-primary);
+  margin-bottom: 1rem;
+}
+
+.chart-tab {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  padding: 0.55rem 1rem;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.chart-tab:hover {
+  color: var(--text-muted);
+}
+
+.chart-tab.active {
+  color: var(--accent-sky);
+  background: rgba(56, 189, 248, 0.06);
+  border-bottom-color: var(--accent-sky);
+}
+
+.skill-badges {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.data-table-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.data-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.2rem;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.data-table-header-title {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.data-table-content {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+@media (max-width: 1100px) {
+  .dashboard-charts-row,
+  .dashboard-tables-row {
+    grid-template-columns: 1fr;
+  }
+}
