@@ -64,17 +64,22 @@ const seedDB = async () => {
     }
 
     // Seed Settings
-    const settingCount = await Setting.countDocuments();
-    if (settingCount === 0 && mockData.settings && mockData.settings.length) {
-      await Setting.insertMany(mockData.settings.map(s => ({
-        singletonId: 1, 
-        backendUrl: s.backendUrl, authToken: s.authToken, evalEndpoint: s.evalEndpoint,
-        modelsEndpoint: s.modelsEndpoint, regressionThreshold: s.regressionThreshold,
-        latencyWarning: s.latencyWarning, errorSpikeThreshold: s.errorSpikeThreshold,
-        defaultScorer: s.defaultScorer, judgeModel: s.judgeModel, evalLanguage: s.evalLanguage,
-        asyncBatch: s.asyncBatch
-      })));
-      console.log(`Seeded settings.`);
+    const existingSetting = await Setting.findOne({ singletonId: 1 });
+    if ((!existingSetting || !existingSetting.backendUrl) && mockData.settings && mockData.settings.length) {
+      const s = mockData.settings[0];
+      await Setting.findOneAndUpdate(
+        { singletonId: 1 },
+        { 
+          singletonId: 1, 
+          backendUrl: s.backendUrl, authToken: s.authToken, evalEndpoint: s.evalEndpoint,
+          modelsEndpoint: s.modelsEndpoint, regressionThreshold: s.regressionThreshold,
+          latencyWarning: s.latencyWarning, errorSpikeThreshold: s.errorSpikeThreshold,
+          defaultScorer: s.defaultScorer, judgeModel: s.judgeModel, evalLanguage: s.evalLanguage,
+          asyncBatch: s.asyncBatch
+        },
+        { upsert: true, new: true }
+      );
+      console.log(`Updated system settings.`);
     }
 
     // Seed TestCases

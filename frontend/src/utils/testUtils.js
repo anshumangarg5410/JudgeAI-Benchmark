@@ -2,7 +2,7 @@
  * Test evaluation utilities
  */
 
-export const CATEGORIES = ['Math', 'Coding', 'Reasoning', 'General'];
+export const CATEGORIES = ['Math', 'Coding', 'Reasoning', 'General', 'Legal'];
 
 export const SAMPLE_PROMPTS = {
   Math: 'Solve: A train travels 120 km/h over 450 km. How long?',

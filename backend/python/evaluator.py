@@ -15,14 +15,15 @@ def evaluate(model_func, test_cases):
             output = actual_answer.lower().strip()
 
             is_correct = False
-            # Check for quality filter skip
-            if "poor" in output or "incorrect" in output:
-                total -= 1
-            else:
-                output_clean = re.sub(r'[^\w\s]', '', output)
-                if expected.lower() in output_clean.split():
-                    is_correct = True
-                    correct += 1
+            
+            # Clean both output and expected similarly
+            output_clean = re.sub(r'[^\w\s]', '', output)
+            expected_clean = re.sub(r'[^\w\s]', '', expected.lower())
+            
+            # Check if cleaned expected is a substring of cleaned output
+            if expected_clean in output_clean:
+                is_correct = True
+                correct += 1
 
             details.append({
                 "category": category,

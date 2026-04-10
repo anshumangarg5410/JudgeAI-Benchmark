@@ -15,8 +15,18 @@ exports.runEvaluation = async (req, res) => {
     // 2. Call the Python Flask microservice to evaluate
     const evalResults = await evalService.evaluateTestCases(testCases, mode);
 
-    // 3. Return the rich results
-    res.json(evalResults);
+    // 3. Reshape results to match frontend expectations
+    // Flask returns { base: { summary, details }, fine: { summary, details } }
+    // Frontend expects { base: summary, fine: summary, baseDetails: details, fineDetails: details }
+    const reshapedResults = {
+      base: evalResults.base.summary,
+      fine: evalResults.fine.summary,
+      baseDetails: evalResults.base.details,
+      fineDetails: evalResults.fine.details
+    };
+
+    // 4. Return the rich results
+    res.json(reshapedResults);
 
   } catch (error) {
     console.error("Evaluation error:", error);
