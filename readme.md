@@ -1,99 +1,103 @@
-<<<<<<< HEAD
-# 🚀 JudgeAI-Benchmark: AI Benchmarking & Evaluation Dashboard
-=======
-# 🚀 JudgeAI-Benchmark - AI Benchmarking & Evaluation Dashboard
->>>>>>> 95fade70da20994c72d6252d6e9f3bc3132c1660
+# ⚖️ JudgeAI-Benchmark
+### **The Ultimate AI Evaluation & Benchmarking Ecosystem**
 
-**JudgeAI-Benchmark** is a high-performance, full-stack platform designed to benchmark and evaluate Large Language Models (LLMs). It provides a side-by-side comparison between Base and Fine-Tuned models using an automated "LLM-as-a-Judge" architecture.
-
-![Dashboard Preview](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
-![Tech Stack](https://img.shields.io/badge/Tech-MERN%20+%20Python-blue?style=for-the-badge)
+**JudgeAI-Benchmark** is a professional, full-stack platform designed to bridge the transparency gap in AI development. It enables developers to compare **Base models** against **Fine-tuned iterations** using a high-fidelity "LLM-as-a-Judge" architecture.
 
 ---
 
-## ✨ Key Features
+## 🌟 Vision & Key Highlights
 
-- **🏆 LLM-as-a-Judge**: Leverages advanced models (like Mistral) to evaluate AI responses based on specific professional criteria (Legal, Medical, Support) with detailed reasoning.
-- **⚡ Dynamic "Live Training"**: A unique Model Registry where users can "program" model personalities instantly via system instructions without needing offline GPU training.
-- **📊 Expansive Analytics**: A professional-grade dashboard featuring:
-  - Side-by-side model comparison.
-  - Accuracy Delta tracking (↑ Gain / ↓ Drop).
-  - Real-time evaluation feed.
-  - Deep-dive modals for full test analysis.
-- **📚 Categorized Benchmarks**: Pre-seeded datasets for 4 professional domains:
-  - **Legal Cases**: Contract interpretation and liability analysis.
-  - **Medical Records**: Diagnostic reasoning and risk assessment.
-  - **Customer Support**: De-escalation and policy adherence.
-  - **General/Edge Cases**: Logic riddles and safety constraint testing.
+> "Transparency is the bedrock of reliable AI." – JudgeAI-Benchmark Team
+
+- **🏆 Professional Grading**: Uses advanced models (Mistral/Llama3) to evaluate responses with clinical and legal precision.
+- **⚡ On-the-Fly Training**: A "Dynamic Personality" engine that simulates fine-tuning via real-time system instruction injection.
+- **🖼️ Deep-Dive Analytics**: Side-by-side comparison modals with monospace typography for pixel-perfect response analysis.
+- **🛡️ Regression Guard**: Real-time delta tracking (↑/↓) to ensure your fine-tuning doesn't break basic model capabilities.
+
+---
+
+## 🚀 Core Features
+
+### 1. **Automated Evaluation (LLM-as-a-Judge)**
+Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the "Student Models."
+- **Reasoning First**: Every grade comes with a detailed AI-generated explanation.
+- **Categorical Benchmarks**: Multi-domain testing across Legal, Medical, and Support transcripts.
+
+### 2. **Dynamic Live Registry**
+- Register any local or remote model endpoint.
+- Define "Individual Personalities" for each model in the database.
+- Instantly switch between models for comparative analysis.
+
+### 3. **High-Fidelity Dashboard**
+- **Live Feed**: Watch the AI think and evaluate in real-time.
+- **Comparison Modal**: A side-by-side view designed for developers.
+- **Status Badges**: Instant visual feedback (PASS/FAIL/DELTA).
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- **React.js**: Modern component-based architecture.
-- **Vanilla CSS**: Premium, glassmorphic UI design.
-- **Lucide React**: For sleek, high-end iconography.
-
-### Backend (Node.js)
-- **Express.js**: Orchestrates the API and database management.
-- **MongoDB**: Persistent storage for models, test cases, and evaluation history.
-- **Mongoose**: Robust schema-based modeling.
-
-### AI Engine (Python)
-- **Flask**: Microservice to handle AI inference.
-- **Ollama**: Local LLM runner for high-speed model execution.
-- **Threading**: Optimized ThreadPoolExecutor for concurrent model evaluation.
+| Layer | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend** | React.js + Vanilla CSS | Glassmorphic Dashboard & Interactive UI |
+| **Backend** | Node.js + Express | API Orchestration & Data Persistence |
+| **Database** | MongoDB + Mongoose | Model Registry & Historic Run Tracking |
+| **AI Engine** | Python Flask | High-speed LLM Inference & Threading |
+| **Intelligence** | Ollama | Local model execution (Mistral, TinyLlama) |
 
 ---
 
-## 🏗 Architecture Overview
+## 🏗 System Architecture
 
 ```mermaid
-graph TD
-    A[React Client] <--> B[Node.js Server]
-    B <--> C[(MongoDB)]
-    B <--> D[Python Flask Engine]
-    D <--> E[Ollama / Local LLMs]
+graph LR
+    User([Developer]) --> UI[React Frontend]
+    UI <--> Node[Node/Express API]
+    Node <--> DB[(MongoDB Atlas)]
+    Node <--> Py[Python Intelligence]
+    Py <--> Ollama[Ollama LLM Runner]
 ```
 
 ---
 
-## 🚀 Getting Started
+## ⚙️ Quick Start Guide
 
-### 1. Prerequisites
-- **Ollama** installed and running (`ollama serve`).
-- **Node.js** and **Python 3.x** installed.
-- **MongoDB** running locally or via Atlas.
-
-### 2. Setup LLMs
-Pull the required models:
+### 1. Model Preparation
+Ensure you have Ollama running and pull the necessary models:
 ```bash
 ollama pull tinyllama
 ollama pull mistral
 ```
 
-### 3. Backend Setup (Node.js)
+### 2. Backend & Intelligence Setup
 ```bash
-cd backend
-npm install
-node server.js
+# Terminal 1: Node.js API
+cd backend && npm install && node server.js
+
+# Terminal 2: Python AI Engine
+cd backend/python && pip install flask axios ollama && python server.py
 ```
 
-### 4. AI Engine Setup (Python)
+### 3. Frontend Activation
 ```bash
-cd backend/python
-pip install flask axios ollama
-python server.py
+cd frontend && npm install && npm run dev
 ```
 
-### 5. Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
 ---
 
-## 📄 License
-Project created for **JudgeAI-Benchmark**. All rights reserved. 2026.
+## 👥 Meet the Architects
+
+We are a group of developers dedicated to bringing transparency to AI benchmarks.
+
+| Member | Focus Area |
+| :--- | :--- |
+| **Anshuman Garg** | Project Lead & Full-Stack Architect |
+| **Navdeesh Kashyap** | Backend & Database Design |
+| **Rohan Sharma** | Frontend UI/UX Specialist |
+| **Reetik Kumar** | AI Engine & Prompt Engineering |
+
+---
+
+## 📄 License & Contact
+Created for **JudgeAI-Benchmark**. All rights reserved. 2026.
+Designed for the next generation of AI developers.
