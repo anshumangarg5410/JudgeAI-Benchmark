@@ -30,13 +30,13 @@ const seedDB = async () => {
       };
     }
 
-    // Seed Users
+    // Seed Users (Plain-text)
     const userCount = await User.countDocuments();
     if (userCount === 0 && mockData.users && mockData.users.length) {
       await User.insertMany(mockData.users.map(u => ({
         email: u.email, password: u.password, name: u.name, role: u.role
       })));
-      console.log(`Seeded ${mockData.users.length} users.`);
+      console.log(`Successfully seeded ${mockData.users.length} plain-text users.`);
     } else {
       console.log("Users already exist or no user data provided, skipping.");
     }

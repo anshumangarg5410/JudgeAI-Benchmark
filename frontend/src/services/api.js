@@ -9,7 +9,16 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const client = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 300000, // increased to 5 minutes 
+  timeout: 300000, 
+});
+
+// ── Auth Interceptor ──
+client.interceptors.request.use((config) => {
+  const token = localStorage.getItem('judgeai_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // ── Response helper ──
@@ -30,36 +39,18 @@ const handleError = (error) => {
 // ════════════════════════════════════════════════════════════════
 export const authApi = {
   async login(email, password) {
-    const users = await client
-      .get('/users', { params: { email: email.toLowerCase() } })
-      .then(handleResponse)
-      .catch(handleError);
-    const user = users[0];
-    if (!user || user.password !== password) {
-      throw new Error('Invalid credentials');
-    }
-    const { password: _, ...safeUser } = user;
-    return safeUser;
+    const res = await client.post('/users/login', { email, password }).then(handleResponse).catch(handleError);
+    return res; // returns { _id, name, email, role, token }
   },
 
   async register(userData) {
-    const existing = await client
-      .get('/users', { params: { email: userData.email.toLowerCase() } })
-      .then(handleResponse);
-    if (existing.length > 0) {
-      throw new Error('An account with this email already exists');
-    }
-    const res = await client
-      .post('/users', {
-        ...userData,
-        email: userData.email.toLowerCase(),
-        role: 'viewer',
-      })
-      .then(handleResponse)
-      .catch(handleError);
-    const { password: _, ...safeUser } = res;
-    return safeUser;
+    const res = await client.post('/users/register', userData).then(handleResponse).catch(handleError);
+    return res;
   },
+
+  async getMe() {
+    return client.get('/users/me').then(handleResponse).catch(handleError);
+  }
 };
 
 // ════════════════════════════════════════════════════════════════

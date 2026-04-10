@@ -9,32 +9,52 @@ export function AuthProvider({ children }) {
 
   // Restore session from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('modelprobe_user');
-    if (stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem('modelprobe_user');
+    const checkAuth = async () => {
+      const token = localStorage.getItem('judgeai_token');
+      const storedUser = localStorage.getItem('judgeai_user');
+      
+      if (token && storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+          // Re-verify with backend to ensure token is still valid
+          const freshUser = await authApi.getMe();
+          setUser(freshUser);
+          localStorage.setItem('judgeai_user', JSON.stringify(freshUser));
+        } catch (err) {
+          console.error("Session expired or invalid token", err);
+          logout();
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = useCallback(async (email, password) => {
-    const userData = await authApi.login(email, password);
+    const data = await authApi.login(email, password);
+    const { token, ...userData } = data;
+    
     setUser(userData);
-    localStorage.setItem('modelprobe_user', JSON.stringify(userData));
+    localStorage.setItem('judgeai_token', token);
+    localStorage.setItem('judgeai_user', JSON.stringify(userData));
     return userData;
   }, []);
 
-  const register = useCallback(async ({ name, email, password }) => {
-    const userData = await authApi.register({ name, email, password });
+  const register = useCallback(async (form) => {
+    const data = await authApi.register(form);
+    const { token, ...userData } = data;
+    
+    setUser(userData);
+    localStorage.setItem('judgeai_token', token);
+    localStorage.setItem('judgeai_user', JSON.stringify(userData));
     return userData;
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('modelprobe_user');
+    localStorage.removeItem('judgeai_token');
+    localStorage.removeItem('judgeai_user');
   }, []);
 
   const value = {

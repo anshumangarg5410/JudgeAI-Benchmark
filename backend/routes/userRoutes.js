@@ -1,8 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userController");
+const { getUsers, createUser } = require("../controllers/userController");
+const { loginUser, registerUser, getMe } = require("../controllers/authController");
+const { protect } = require("../middleware/authMiddleware");
 
-router.get("/", userController.getUsers);
-router.post("/", userController.createUser);
+// Auth routes
+router.post("/login", loginUser);
+router.post("/register", registerUser);
+router.get("/me", protect, getMe);
+
+// Management routes (Ideally protected by admin middleware later)
+router.get("/", getUsers);
+router.post("/", createUser);
 
 module.exports = router;

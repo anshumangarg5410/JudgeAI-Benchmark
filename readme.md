@@ -13,6 +13,7 @@
 - **⚡ On-the-Fly Training**: A "Dynamic Personality" engine that simulates fine-tuning via real-time system instruction injection.
 - **🖼️ Deep-Dive Analytics**: Side-by-side comparison modals with monospace typography for pixel-perfect response analysis.
 - **🛡️ Regression Guard**: Real-time delta tracking (↑/↓) to ensure your fine-tuning doesn't break basic model capabilities.
+- **🔐 Secure Sessions**: Industry-standard JWT (JSON Web Token) authentication to protect model registries and test results.
 
 ---
 
@@ -44,6 +45,7 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 - **Live Feed**: Watch the AI think and evaluate in real-time.
 - **Comparison Modal**: A side-by-side view designed for developers.
 - **Status Badges**: Instant visual feedback (PASS/FAIL/DELTA).
+- **Protected Routes**: Secure login system with session persistence across page refreshes.
 
 ---
 
@@ -54,6 +56,7 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 | **Frontend** | React.js + Vanilla CSS | Glassmorphic Dashboard & Interactive UI |
 | **Backend** | Node.js + Express | API Orchestration & Data Persistence |
 | **Database** | MongoDB + Mongoose | Model Registry & Historic Run Tracking |
+| **Auth** | JWT (JSON Web Tokens) | Secure Session Management & Protected Routes |
 | **AI Engine** | Python Flask | High-speed LLM Inference & Threading |
 | **Intelligence** | Ollama | Local model execution (Mistral, TinyLlama) |
 
@@ -64,7 +67,7 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 ```mermaid
 graph LR
     User([Developer]) --> UI[React Frontend]
-    UI <--> Node[Node/Express API]
+    UI -- "JWT Auth" --> Node[Node/Express API]
     Node <--> DB[(MongoDB Atlas)]
     Node <--> Py[Python Intelligence]
     Py <--> Ollama[Ollama LLM Runner]
@@ -94,6 +97,11 @@ cd backend/python && pip install flask axios ollama && python server.py
 ```bash
 cd frontend && npm install && npm run dev
 ```
+
+### 🔑 Demo Credentials
+Access the platform with these pre-seeded accounts:
+- **Username**: `admin@hackmania.io`
+- **Password**: `password123`
 
 ---
 
