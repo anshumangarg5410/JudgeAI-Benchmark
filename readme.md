@@ -16,17 +16,17 @@
 
 ---
 
-## 📸 Visual Tour
+<!-- ## 📸 Visual Tour
 
 ### **Interactive Analytics Dashboard**
-![Dashboard Preview](docs/dashboard.png)
+![Dashboard Preview](docs/dashboard.jpeg)
 *Real-time performance metrics, accuracy charts, and skill-based regression analysis.*
 
 ### **Side-by-Side Evaluation**
-![Run Tests Preview](docs/run_tests.png)
+![Run Tests Preview](docs/run_tests.jpeg)
 *Compare model responses in real-time with an automated AI Judge grading every output.*
 
----
+--- -->
 
 ## 🚀 Core Features
 
