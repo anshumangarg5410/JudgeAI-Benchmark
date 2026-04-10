@@ -4,7 +4,7 @@ const app = require("./app");
 
 connectDB();
 
-const PORT = process.env.PORT || 3000; // Node on 3000
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Node server running on port ${PORT}`);
