@@ -89,20 +89,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
----
-
-## 👥 The Team
-
-We are a group of developers dedicated to building transparent and actionable AI evaluation tools.
-
-| Name | Role |
-| :--- | :--- |
-| **Anshuman Garg** | Project Lead & Full-Stack Architect |
-| **Navdeesh Kashyap** | Backend & Database Design |
-| **Rohan Sharma** | Frontend UI/UX Specialist |
-| **Reetik Kumar** | AI Engine & Prompt Engineering |
-
 ---
 
 ## 📄 License
