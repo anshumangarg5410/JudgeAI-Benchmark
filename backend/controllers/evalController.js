@@ -1,23 +1,37 @@
 const TestCase = require("../models/TestCase");
+const Model = require("../models/Model");
 const evalService = require("../services/evalService");
 
 exports.runEvaluation = async (req, res) => {
-  const { baseModel, ftModel, categories, mode } = req.body;
+  const { baseId, ftId, categories, mode } = req.body;
   
   try {
-    // 1. Fetch test cases from MongoDB matching the requested categories
-    const testCases = await TestCase.find({ category: { $in: categories } });
+    // 1. Fetch Model Instructions (Notes) from Registry
+    const baseModelRecord = await Model.findOne({ id: baseId });
+    const ftModelRecord = await Model.findOne({ id: ftId });
+
+    const baseInstructions = baseModelRecord?.notes || "";
+    const ftInstructions = ftModelRecord?.notes || "";
+
+    // 2. Limit test cases per category for faster evaluation
+    const testCases = [];
+    for (const cat of categories) {
+      const cases = await TestCase.find({ category: cat }).limit(2);
+      testCases.push(...cases);
+    }
     
     if (!testCases || testCases.length === 0) {
       return res.status(400).json({ error: "No test cases found for selected categories." });
     }
 
-    // 2. Call the Python Flask microservice to evaluate
-    const evalResults = await evalService.evaluateTestCases(testCases, mode);
+    // 3. Pass Instructions to the AI Engine
+    const evalResults = await evalService.evaluateTestCases(
+        testCases, 
+        mode,
+        baseInstructions,
+        ftInstructions
+    );
 
-    // 3. Reshape results to match frontend expectations
-    // Flask returns { base: { summary, details }, fine: { summary, details } }
-    // Frontend expects { base: summary, fine: summary, baseDetails: details, fineDetails: details }
     const reshapedResults = {
       base: evalResults.base.summary,
       fine: evalResults.fine.summary,
@@ -25,7 +39,6 @@ exports.runEvaluation = async (req, res) => {
       fineDetails: evalResults.fine.details
     };
 
-    // 4. Return the rich results
     res.json(reshapedResults);
 
   } catch (error) {

@@ -12,10 +12,9 @@ exports.getModels = async (req, res) => {
 exports.getModelById = async (req, res) => {
   try {
     const { id } = req.params;
-    // Find by the custom `id` field usually
     let model = await Model.findOne({ id: id });
     if (!model) {
-        model = await Model.findById(id); // fallback
+        model = await Model.findById(id); 
     }
     if (!model) return res.status(404).json({ error: "Model not found" });
     res.json(model);

@@ -5,90 +5,96 @@
 import { useState, useCallback } from 'react';
 import { evaluateApi } from '../services/api';
 
-const RUN_STEPS = {
-  Fast: [
-    { message: 'Initialising…', duration: 300 },
-    { message: 'Evaluating…', duration: 600 },
-    { message: 'Scoring…', duration: 300 },
-  ],
-  Standard: [
-    { message: 'Initialising…', duration: 300 },
-    { message: 'Querying backend…', duration: 800 },
-    { message: 'Awaiting Flask evaluation…', duration: 1500 },
-    { message: 'Computing metrics…', duration: 400 },
-    { message: 'Generating insights…', duration: 300 },
-  ],
-  'Deep Eval': [
-    { message: 'Initialising…', duration: 300 },
-    { message: 'Deep evaluation started…', duration: 1500 },
-    { message: 'Evaluating models…', duration: 2000 },
-    { message: 'Calibrating…', duration: 600 },
-    { message: 'Finalising…', duration: 400 },
-  ],
-};
-
 export function useTestRunner() {
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [progressText, setProgressText] = useState('');
+  const [logs, setLogs] = useState([]);
 
   const runTests = useCallback(async ({ baseModel, ftModel, categories, mode }) => {
     setRunning(true);
     setProgress(0);
-    setProgressText('Starting…');
+    setProgressText('Initialising evaluation benchmark...');
+    setLogs([]);
 
-    const steps = RUN_STEPS[mode] || RUN_STEPS.Standard;
-
-    // Start progress animation asynchronously (visual only)
-    const animatePromise = (async () => {
-      for (let i = 0; i < steps.length - 1; i++) {
-        if (!running) break;
-        setProgressText(steps[i].message);
-        setProgress(Math.round(((i + 1) / steps.length) * 100));
-        await new Promise((r) => setTimeout(r, steps[i].duration));
-      }
-    })();
+    const aggregatedBaseDetails = [];
+    const aggregatedFineDetails = [];
+    const aggregatedBaseSummary = {};
+    const aggregatedFineSummary = {};
 
     try {
-      // Call Real Backend Endpoint
-      const evalData = await evaluateApi.run({
-        baseModel: baseModel.id,
-        ftModel: ftModel.id,
-        categories,
-        mode,
-      });
+      // Process one category at a time for LIVE progress
+      for (let i = 0; i < categories.length; i++) {
+        const cat = categories[i];
+        const currentProgress = Math.round((i / categories.length) * 100);
+        
+        setProgress(currentProgress);
+        setProgressText(`[${i + 1}/${categories.length}] Evaluating ${cat}...`);
 
-      // Format results by zipping Base and FT details
+        // Call Real Backend Endpoint
+        const evalData = await evaluateApi.run({
+          baseModel: baseModel.id,
+          ftModel: ftModel.id,
+          categories: [cat],
+          mode,
+        });
+
+        // Add to live logs
+        if (evalData.baseDetails) {
+          const newLogs = evalData.baseDetails.map((b, idx) => {
+            const f = evalData.fineDetails[idx];
+            return {
+              id: `${cat}-${i}-${idx}-${Date.now()}`,
+              category: cat,
+              question: b.question,
+              baseActual: b.actual,
+              ftActual: f.actual,
+              passed: b.passed && f.passed
+            };
+          });
+          setLogs(prev => [...newLogs, ...prev].slice(0, 50));
+        }
+
+        // Accumulate details
+        if (evalData.baseDetails) aggregatedBaseDetails.push(...evalData.baseDetails);
+        if (evalData.fineDetails) aggregatedFineDetails.push(...evalData.fineDetails);
+        
+        // Accumulate summaries
+        if (evalData.base) Object.assign(aggregatedBaseSummary, evalData.base);
+        if (evalData.fine) Object.assign(aggregatedFineSummary, evalData.fine);
+      }
+
+      // Final processing of aggregated results
       const rows = [];
       const summary = [];
 
       // Process individual test rows
-      if (evalData.baseDetails && evalData.fineDetails) {
-        evalData.baseDetails.forEach((bDetail, idx) => {
-          const fDetail = evalData.fineDetails[idx];
-          
-          rows.push({
-            category: bDetail.category,
-            testId: `${bDetail.category.slice(0, 3).toUpperCase()}-${String(idx + 1).padStart(3, '0')}`,
-            prompt: bDetail.question,
-            expected: bDetail.expected,
-            baseActual: bDetail.actual,
-            ftActual: fDetail.actual,
-            baseAcc: bDetail.passed ? 1.0 : 0.0,
-            ftAcc: fDetail.passed ? 1.0 : 0.0,
-            deltaAcc: +( (fDetail.passed ? 1.0 : 0.0) - (bDetail.passed ? 1.0 : 0.0) ).toFixed(2),
-            baseLat: 0.1, // Note: Latency not yet provided by Flask
-            ftLat: 0.1,
-            baseErr: 0,
-            ftErr: 0,
-          });
+      aggregatedBaseDetails.forEach((bDetail, idx) => {
+        const fDetail = aggregatedFineDetails[idx];
+        
+        rows.push({
+          category: bDetail.category,
+          testId: `${bDetail.category.slice(0, 3).toUpperCase()}-${String(idx + 1).padStart(3, '0')}`,
+          prompt: bDetail.question,
+          expected: bDetail.expected,
+          baseActual: bDetail.actual,
+          ftActual: fDetail.actual,
+          baseAcc: bDetail.passed ? 1.0 : 0.0,
+          ftAcc: fDetail.passed ? 1.0 : 0.0,
+          deltaAcc: +( (fDetail.passed ? 1.0 : 0.0) - (bDetail.passed ? 1.0 : 0.0) ).toFixed(2),
+          baseLat: 0.1, // Note: Latency not yet provided by Flask
+          ftLat: 0.1,
+          baseErr: 0,
+          ftErr: 0,
+          baseExplanation: bDetail.explanation,
+          ftExplanation: fDetail.explanation,
         });
-      }
+      });
       
-      // Process Summary
+      // Process Summary for each category
       for (const cat of categories) {
-        const bAcc = (evalData.base?.[cat] || 0) / 100;
-        const fAcc = (evalData.fine?.[cat] || 0) / 100;
+        const bAcc = (aggregatedBaseSummary[cat] || 0) / 100;
+        const fAcc = (aggregatedFineSummary[cat] || 0) / 100;
         
         summary.push({
           category: cat,
@@ -98,16 +104,13 @@ export function useTestRunner() {
           ftLat: 0.1,
           baseErr: 0,
           ftErr: 0,
-          tests: evalData.baseDetails?.filter(d => d.category === cat).length || 0,
+          tests: aggregatedBaseDetails.filter(d => d.category === cat).length,
         });
       }
-
-      await animatePromise; 
-
       
-      setProgressText(steps[steps.length - 1].message);
       setProgress(100);
-      await new Promise((r) => setTimeout(r, minTime));
+      setProgressText('Evaluation complete! Finalising report...');
+      await new Promise((r) => setTimeout(r, 800)); // Brief pause for UX
 
       setRunning(false);
       setProgress(0);
@@ -133,9 +136,7 @@ export function useTestRunner() {
       setProgressText('');
       throw error;
     }
-  }, [running]);
+  }, []); 
 
-  const minTime = 300;
-
-  return { running, progress, progressText, runTests };
+  return { running, progress, progressText, logs, runTests };
 }

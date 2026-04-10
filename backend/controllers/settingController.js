@@ -4,7 +4,7 @@ exports.getSetting = async (req, res) => {
   try {
     let setting = await Setting.findOne({ singletonId: 1 });
     if (!setting) {
-      setting = await Setting.create({ singletonId: 1 }); // Create default if missing
+      setting = await Setting.create({ singletonId: 1 }); 
     }
     res.json(setting);
   } catch (err) {
@@ -17,7 +17,7 @@ exports.updateSetting = async (req, res) => {
     const setting = await Setting.findOneAndUpdate(
       { singletonId: 1 },
       req.body,
-      { new: true, upsert: true } // upsert ensures it creates if doesn't exist
+      { new: true, upsert: true } 
     );
     res.json(setting);
   } catch (err) {

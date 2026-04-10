@@ -27,7 +27,8 @@ export default function DashboardPage() {
   const { lastResults } = useAppState();
   const [chartTab, setChartTab] = useState('accuracy');
   const [showSummary, setShowSummary] = useState(true);
-  const [showRaw, setShowRaw] = useState(false);
+  const [showRaw, setShowRaw] = useState(true);
+  const [selectedResult, setSelectedResult] = useState(null);
 
   const now = new Date().toLocaleString('en-US', {
     month: 'short',
@@ -59,21 +60,16 @@ export default function DashboardPage() {
   const baseName = baseModel.name;
   const ftName = ftModel.name;
 
-  // Compute metrics
   const metrics = useMemo(() => {
     const bAccAvg = rows.reduce((s, r) => s + r.baseAcc, 0) / rows.length;
     const fAccAvg = rows.reduce((s, r) => s + r.ftAcc, 0) / rows.length;
     const dAcc = fAccAvg - bAccAvg;
-
     const fLatAvg = rows.reduce((s, r) => s + r.ftLat, 0) / rows.length;
     const bLatAvg = rows.reduce((s, r) => s + r.baseLat, 0) / rows.length;
     const dLat = fLatAvg - bLatAvg;
-
     const fErrSum = rows.reduce((s, r) => s + r.ftErr, 0);
     const bErrSum = rows.reduce((s, r) => s + r.baseErr, 0);
-
     const regressions = rows.filter((r) => r.deltaAcc < -0.03).length;
-
     return { fAccAvg, dAcc, fLatAvg, dLat, fErrSum, bErrSum, regressions };
   }, [rows]);
 
@@ -92,8 +88,8 @@ export default function DashboardPage() {
         title="AI Model Regression Testing"
         subtitle={
           <>
-            Compare base vs fine-tuned model performance — accuracy, latency, regression
-            signals.&nbsp;·&nbsp;
+            Compare base vs fine-tuned model performance — accuracy, latency, regression signals.
+            &nbsp;·&nbsp;
             <span style={{ color: '#334155', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
               {now}
             </span>
@@ -101,6 +97,71 @@ export default function DashboardPage() {
         }
         user={user}
       />
+
+      {/* Result Details Modal */}
+      {selectedResult && (
+        <div className="modal-backdrop" onClick={() => setSelectedResult(null)}>
+          <div className="modal-content animate-fade-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="flex flex-col">
+                <span className="label" style={{ color: 'var(--accent-sky)' }}>[{selectedResult.category}] Evaluation View</span>
+                <h2 className="modal-title">Test Results: {selectedResult.testId}</h2>
+              </div>
+              <button className="btn-close" onClick={() => setSelectedResult(null)}>×</button>
+            </div>
+            
+            <div className="modal-body custom-scrollbar">
+              <div className="modal-section prompt-section">
+                <label className="modal-label">Input Prompt</label>
+                <div className="modal-text-box prompt-text">{selectedResult.prompt}</div>
+              </div>
+
+              <div className="modal-comparison-grid">
+                <div className="modal-section">
+                  <div className="flex flex-between flex-center mb-2">
+                    <label className="modal-label">Base Model Response</label>
+                    <span className={`status-badge ${selectedResult.baseAcc > 0 ? 'status-pass' : 'status-fail'}`}>
+                      {selectedResult.baseAcc > 0 ? 'PASS' : 'FAIL'}
+                    </span>
+                  </div>
+                  <div className={`modal-text-box response-text ${selectedResult.baseAcc > 0 ? 'border-success' : 'border-error'}`}>
+                    {selectedResult.baseActual}
+                  </div>
+                  {selectedResult.baseExplanation && (
+                    <div className="judge-box">
+                      <span className="judge-tag">JUDGE REASONING</span>
+                      <p className="judge-explanation">{selectedResult.baseExplanation}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="modal-section">
+                  <div className="flex flex-between flex-center mb-2">
+                    <label className="modal-label">Fine-Tuned Model Response</label>
+                    <span className={`status-badge ${selectedResult.ftAcc > 0 ? 'status-pass' : 'status-fail'}`}>
+                      {selectedResult.ftAcc > 0 ? 'PASS' : 'FAIL'}
+                    </span>
+                  </div>
+                  <div className={`modal-text-box response-text ${selectedResult.ftAcc > 0 ? 'border-success' : 'border-error'}`}>
+                    {selectedResult.ftActual}
+                  </div>
+                  {selectedResult.ftExplanation && (
+                    <div className="judge-box">
+                      <span className="judge-tag">JUDGE REASONING</span>
+                      <p className="judge-explanation">{selectedResult.ftExplanation}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="modal-section">
+                <label className="modal-label">Expected Baseline / Criteria</label>
+                <div className="modal-text-box expected-text">{selectedResult.expected}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <StatusBar
         total={total}
@@ -110,7 +171,6 @@ export default function DashboardPage() {
         ftName={ftName}
       />
 
-      {/* Metric Cards */}
       <MetricGrid>
         <MetricCard
           label="FT Model Accuracy"
@@ -142,7 +202,6 @@ export default function DashboardPage() {
         />
       </MetricGrid>
 
-      {/* Charts + Skill Table */}
       <div className="card">
         <div className="card-title">
           <span className="dot" /> Performance Visualisation & Skill Comparison
@@ -162,18 +221,10 @@ export default function DashboardPage() {
               </button>
             ))}
           </div>
-          {chartTab === 'accuracy' && (
-            <AccuracyChart summary={summary} baseName={baseName} ftName={ftName} />
-          )}
-          {chartTab === 'latency' && (
-            <LatencyChart summary={summary} baseName={baseName} ftName={ftName} />
-          )}
-          {chartTab === 'radar' && (
-            <RadarChart summary={summary} baseName={baseName} ftName={ftName} />
-          )}
-          {chartTab === 'errors' && (
-            <ErrorChart summary={summary} baseName={baseName} ftName={ftName} />
-          )}
+          {chartTab === 'accuracy' && <AccuracyChart summary={summary} baseName={baseName} ftName={ftName} />}
+          {chartTab === 'latency' && <LatencyChart summary={summary} baseName={baseName} ftName={ftName} />}
+          {chartTab === 'radar' && <RadarChart summary={summary} baseName={baseName} ftName={ftName} />}
+          {chartTab === 'errors' && <ErrorChart summary={summary} baseName={baseName} ftName={ftName} />}
         </div>
 
         <div>
@@ -184,26 +235,16 @@ export default function DashboardPage() {
           <div className="skill-badges">
             <Badge variant="base">{summary.length} categories</Badge>
             <Badge variant="fine-tuned">▲ {improved} improved</Badge>
-            {regressed > 0 && (
-              <Badge variant="reg">▼ {regressed} regressed</Badge>
-            )}
+            {regressed > 0 && <Badge variant="reg">▼ {regressed} regressed</Badge>}
           </div>
         </div>
       </div>
 
-      {/* Data Tables */}
       <div className="dashboard-tables-row">
         <div className="data-table-section">
-          <div
-            className="data-table-header"
-            onClick={() => setShowSummary(!showSummary)}
-          >
-            <span className="data-table-header-title">
-              📋 Category Summary
-            </span>
-            <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>
-              {showSummary ? '▼' : '▶'}
-            </span>
+          <div className="data-table-header" onClick={() => setShowSummary(!showSummary)}>
+            <span className="data-table-header-title">📋 Category Summary</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>{showSummary ? '▼' : '▶'}</span>
           </div>
           {showSummary && (
             <div className="data-table-content">
@@ -221,27 +262,16 @@ export default function DashboardPage() {
                   {summary.map((s) => (
                     <tr key={s.category}>
                       <td style={{ fontWeight: 500 }}>{s.category}</td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }}>
-                        {(s.baseAcc * 100).toFixed(1)}%
-                      </td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }}>
-                        {(s.ftAcc * 100).toFixed(1)}%
-                      </td>
-                      <td
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontWeight: 600,
-                          color:
-                            s.ftAcc - s.baseAcc >= 0
-                              ? 'var(--color-success)'
-                              : 'var(--color-error)',
-                        }}
-                      >
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{(s.baseAcc * 100).toFixed(1)}%</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{(s.ftAcc * 100).toFixed(1)}%</td>
+                      <td style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontWeight: 600,
+                        color: s.ftAcc - s.baseAcc >= 0 ? 'var(--color-success)' : 'var(--color-error)'
+                      }}>
                         {((s.ftAcc - s.baseAcc) * 100).toFixed(1)}%
                       </td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }}>
-                        {s.tests}
-                      </td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{s.tests}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -250,55 +280,38 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="data-table-section">
-          <div
-            className="data-table-header"
-            onClick={() => setShowRaw(!showRaw)}
-          >
-            <span className="data-table-header-title">
-              🔍 Full Test Results
-            </span>
-            <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>
-              {showRaw ? '▼' : '▶'}
-            </span>
+        <div className="data-table-section full-width-section">
+          <div className="data-table-header" onClick={() => setShowRaw(!showRaw)}>
+            <span className="data-table-header-title">🔍 Full Test Results (Benchmarks)</span>
+            <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>{showRaw ? '▼ Hide' : '▶ Show'}</span>
           </div>
           {showRaw && (
-            <div className="data-table-content">
-              <table className="reg-table">
+            <div className="data-table-content expanded-table-view">
+              <table className="reg-table results-table">
                 <thead>
                   <tr>
-                    <th>Category</th>
-                    <th>Test #</th>
-                    <th>Δ Acc</th>
-                    <th>Base</th>
-                    <th>FT</th>
+                    <th width="15%">Category</th>
+                    <th width="35%">Prompt Snippet</th>
+                    <th width="12%">Base Acc</th>
+                    <th width="12%">FT Acc</th>
+                    <th width="15%">Delta</th>
+                    <th width="11%" className="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rows.map((r, i) => (
-                    <tr key={i}>
-                      <td>{r.category}</td>
-                      <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={r.prompt}>
-                        {r.prompt}
+                    <tr key={i} className="interactive-row" onClick={() => setSelectedResult(r)}>
+                      <td className="cat-cell"><span className="cat-pill">{r.category}</span></td>
+                      <td className="prompt-cell">{r.prompt.length > 100 ? r.prompt.slice(0, 100) + '...' : r.prompt}</td>
+                      <td><span className={r.baseAcc > 0 ? 'text-success' : 'text-error'}>{r.baseAcc > 0 ? 'PASS' : 'FAIL'}</span></td>
+                      <td><span className={r.ftAcc > 0 ? 'text-success' : 'text-error'}>{r.ftAcc > 0 ? 'PASS' : 'FAIL'}</span></td>
+                      <td className="delta-cell">
+                        <span className={`delta-chip ${r.deltaAcc >= 0 ? 'delta-pos' : 'delta-neg'}`}>
+                          {r.deltaAcc > 0 ? '↑' : r.deltaAcc < 0 ? '↓' : '→'} {Math.abs(r.deltaAcc * 100).toFixed(0)}%
+                        </span>
                       </td>
-                      <td
-                        style={{
-                          fontFamily: 'var(--font-mono)',
-                          fontWeight: 600,
-                          color:
-                            r.deltaAcc >= 0
-                              ? 'var(--color-success)'
-                              : 'var(--color-error)',
-                        }}
-                      >
-                        {r.deltaAcc >= 0 ? '✔️ PASS' : '❌ FAIL'}
-                      </td>
-                      <td style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
-                        <div style={{ maxHeight: '60px', overflowY: 'auto' }}>
-                          <strong>Base:</strong> {r.baseActual}
-                          <br />
-                          <strong style={{ color: 'var(--color-fine-tuned)' }}>FT:</strong> {r.ftActual}
-                        </div>
+                      <td className="text-center">
+                        <button className="btn-icon">👁️ Review</button>
                       </td>
                     </tr>
                   ))}
@@ -309,7 +322,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Insights */}
       <div className="card">
         <div className="card-title">
           <span className="dot" /> Automated Insights

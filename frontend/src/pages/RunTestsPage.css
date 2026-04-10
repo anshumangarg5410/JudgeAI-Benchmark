@@ -100,3 +100,72 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Live Feed Console */
+.live-feed-card {
+  margin: 1rem 0;
+  border-color: rgba(56, 189, 248, 0.2);
+}
+
+.live-feed-console {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.console-line {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border-left: 2px solid var(--border-primary);
+  padding-left: 1rem;
+}
+
+.console-meta {
+  color: var(--accent-sky);
+  font-weight: 600;
+  margin-right: 0.5rem;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.console-prompt {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.console-resp {
+  margin-top: 0.6rem;
+  color: var(--text-muted);
+  word-break: break-all;
+}
+
+.resp-label {
+  color: var(--accent-indigo);
+  font-weight: 600;
+  margin-right: 0.4rem;
+}
+
+.muted {
+  color: var(--text-dim);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* Custom Scrollbar for Console */
+.live-feed-console::-webkit-scrollbar {
+  width: 6px;
+}
+.live-feed-console::-webkit-scrollbar-track {
+  background: transparent;
+}
+.live-feed-console::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}

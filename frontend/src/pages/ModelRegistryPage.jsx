@@ -134,13 +134,17 @@ export default function ModelRegistryPage() {
                 </td>
                 <td>
                   <div className="model-actions">
-                    <button
-                      className="btn btn-danger"
-                      style={{ padding: '0.3rem 0.7rem', fontSize: '0.72rem' }}
-                      onClick={() => handleDelete(m.id, m.name)}
-                    >
-                      Delete
-                    </button>
+                    {['tinyllama-base', 'tinyllama-ft'].includes(m.id) ? (
+                      <span className="badge badge-system" style={{ opacity: 0.6, fontSize: '0.65rem' }}>System Reserved</span>
+                    ) : (
+                      <button
+                        className="btn btn-danger"
+                        style={{ padding: '0.3rem 0.7rem', fontSize: '0.72rem' }}
+                        onClick={() => handleDelete(m.id, m.name)}
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>

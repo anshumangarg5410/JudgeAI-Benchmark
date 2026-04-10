@@ -2,13 +2,22 @@
  * Test evaluation utilities
  */
 
-export const CATEGORIES = ['Math', 'Coding', 'Reasoning', 'General', 'Legal'];
+export const CATEGORIES = [
+  'Legal Cases',
+  'Medical Records',
+  'Customer Support Transcripts',
+  'General / Edge Cases'
+];
 
 export const SAMPLE_PROMPTS = {
-  Math: 'Solve: A train travels 120 km/h over 450 km. How long?',
-  Coding: 'Write a Python function to detect cycles in a linked list.',
+  'Legal Cases': 'Analyze the enforceability of a 50-mile non-compete clause...',
+  'Medical Records': 'Review 65yo patient chart for COPD vs CHF exacerbation...',
+  'Customer Support Transcripts': 'Resolve a complex billing dispute with an irate customer...',
+  'General / Edge Cases': 'Logic puzzle: Brothers and sisters I have none...',
+  Math: 'Calculate the derivative of x^2 + 5x at x=2.',
+  Coding: 'Write a Python function to find the intersection of two lists.',
   Reasoning: 'All roses are flowers. Some flowers fade. Can roses fade?',
-  General: 'Explain entropy in thermodynamics simply.',
+  General: 'Explain the concept of entropy in thermodynamics simply.',
 };
 
 /**

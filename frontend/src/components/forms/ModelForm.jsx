@@ -103,12 +103,13 @@ export default function ModelForm({ existingIds = [], onSubmit, loading }) {
       </div>
 
       <div className="form-group" style={{ marginBottom: '1rem' }}>
-        <label className="form-label">Notes (optional)</label>
+        <label className="form-label">Training Instructions / Personality (Live Training)</label>
         <textarea
           className="form-textarea"
-          placeholder="Training details, version info…"
+          placeholder="Describe how this model was 'trained' or define its personality (e.g. 'You are a sarcastic legal expert'). These instructions will be used in benchmarks..."
           value={form.notes}
           onChange={set('notes')}
+          style={{ minHeight: '100px' }}
         />
       </div>
 

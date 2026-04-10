@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Model = require("./models/Model");
 
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hackmania").then(async () => {
-    // Clear old ones just in case there are partials
+
     await Model.deleteMany({});
     
     // Add base

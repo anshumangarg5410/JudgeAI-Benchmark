@@ -10,7 +10,7 @@ const MODES = ['Standard', 'Fast', 'Deep Eval'];
 
 export default function RunTestsPage() {
   const { models, addRun, setLastResults } = useAppState();
-  const { running, progress, progressText, runTests } = useTestRunner();
+  const { running, progress, progressText, logs, runTests } = useTestRunner();
   const navigate = useNavigate();
 
   const baseModels = useMemo(
@@ -210,6 +210,42 @@ export default function RunTestsPage() {
           <div className="progress-text">{progressText}</div>
           <div className="progress-bar-wrap">
             <div className="progress-bar" style={{ width: `${progress}%` }} />
+          </div>
+        </div>
+      )}
+
+      {/* Live Feed Console */}
+      {(running || (logs && logs.length > 0)) && (
+        <div className="card live-feed-card animate-slide-up">
+          <div className="card-title">
+            <span 
+              className="dot" 
+              style={{ background: running ? '#10b981' : '#6b7280', boxShadow: running ? '0 0 8px #10b981' : 'none' }} 
+            />
+            Live Evaluation Feed
+          </div>
+          <div className="live-feed-console">
+            {logs.length === 0 && <div className="muted text-center py-4">Awaiting first results from the models...</div>}
+            {logs.map((log) => (
+              <div key={log.id} className="console-line">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="console-meta">[{log.category}]</span>
+                  <span className="console-prompt">Q: {log.question.length > 80 ? log.question.slice(0, 80) + '...' : log.question}</span>
+                </div>
+                <div className="console-resp">
+                  <span className="resp-label">Base:</span>
+                  <span className={log.passed ? 'text-green-400' : ''}>
+                    {log.baseActual.length > 120 ? log.baseActual.slice(0, 120) + '...' : log.baseActual}
+                  </span>
+                </div>
+                <div className="console-resp" style={{ marginTop: '0.3rem' }}>
+                  <span className="resp-label">FT:</span>
+                  <span className={log.passed ? 'text-green-400' : ''}>
+                    {log.ftActual.length > 120 ? log.ftActual.slice(0, 120) + '...' : log.ftActual}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
