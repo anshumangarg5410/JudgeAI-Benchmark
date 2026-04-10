@@ -72,12 +72,14 @@ def run_eval():
     if not formatted:
         return jsonify({"error": "No valid test cases found"}), 400
 
-    base_results = evaluate(base_model, formatted)
-    fine_results = evaluate(fine_tuned_model, formatted)
+    base_eval = evaluate(base_model, formatted)
+    fine_eval = evaluate(fine_tuned_model, formatted)
 
     return jsonify({
-        "base": base_results,
-        "fine": fine_results
+        "base": base_eval["summary"],
+        "fine": fine_eval["summary"],
+        "baseDetails": base_eval["details"],
+        "fineDetails": fine_eval["details"]
     })
 
 

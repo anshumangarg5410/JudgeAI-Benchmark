@@ -1,15 +1,15 @@
 /**
  * ModelProbe — Centralized API Service Layer
- * All HTTP calls go through here. Points at JSON Server (port 3001).
+ * All HTTP calls go through here. Points to Node Express backend.
  */
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3001';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const client = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 10000,
+  timeout: 300000, // increased to 5 minutes 
 });
 
 // ── Response helper ──
@@ -17,6 +17,7 @@ const handleResponse = (res) => res.data;
 
 const handleError = (error) => {
   const message =
+    error.response?.data?.error ||
     error.response?.data?.message ||
     error.message ||
     'An unexpected error occurred';
@@ -37,7 +38,6 @@ export const authApi = {
     if (!user || user.password !== password) {
       throw new Error('Invalid credentials');
     }
-    // Don't return the password to the frontend
     const { password: _, ...safeUser } = user;
     return safeUser;
   },
@@ -117,8 +117,17 @@ export const settingsApi = {
   },
 
   update(data) {
-    return client.put('/settings/1', { id: 1, ...data }).then(handleResponse).catch(handleError);
+    return client.put('/settings/1', data).then(handleResponse).catch(handleError);
   },
+};
+
+// ════════════════════════════════════════════════════════════════
+// EVALUATE
+// ════════════════════════════════════════════════════════════════
+export const evaluateApi = {
+  run(payload) {
+    return client.post('/evaluate', payload).then(handleResponse).catch(handleError);
+  }
 };
 
 export default client;

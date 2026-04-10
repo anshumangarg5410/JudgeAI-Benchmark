@@ -278,8 +278,8 @@ export default function DashboardPage() {
                   {rows.map((r, i) => (
                     <tr key={i}>
                       <td>{r.category}</td>
-                      <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                        {r.testId}
+                      <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={r.prompt}>
+                        {r.prompt}
                       </td>
                       <td
                         style={{
@@ -291,13 +291,14 @@ export default function DashboardPage() {
                               : 'var(--color-error)',
                         }}
                       >
-                        {(r.deltaAcc * 100).toFixed(1)}%
+                        {r.deltaAcc >= 0 ? '✔️ PASS' : '❌ FAIL'}
                       </td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }}>
-                        {(r.baseAcc * 100).toFixed(1)}%
-                      </td>
-                      <td style={{ fontFamily: 'var(--font-mono)' }}>
-                        {(r.ftAcc * 100).toFixed(1)}%
+                      <td style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>
+                        <div style={{ maxHeight: '60px', overflowY: 'auto' }}>
+                          <strong>Base:</strong> {r.baseActual}
+                          <br />
+                          <strong style={{ color: 'var(--color-fine-tuned)' }}>FT:</strong> {r.ftActual}
+                        </div>
                       </td>
                     </tr>
                   ))}
