@@ -98,5 +98,5 @@ cd frontend && npm install && npm run dev
 ---
 
 ## 📄 License & Contact
-Created for **HACKMANIA HACKATHON** All rights reserved. 2026.
+All rights reserved. 2026.
 Designed for the next generation of AI developers.
