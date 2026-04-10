@@ -85,19 +85,6 @@ cd frontend && npm install && npm run dev
 
 ---
 
-## 👥 Meet the Architects
-
-We are a group of developers dedicated to bringing transparency to AI benchmarks.
-
-| Member | Focus Area |
-| :--- | :--- |
-| **Anshuman Garg** | Project Lead & Full-Stack Architect |
-| **Navdeesh Kashyap** | Backend & Database Design |
-| **Rohan Sharma** | Frontend UI/UX Specialist |
-| **Reetik Kumar** | AI Engine & Prompt Engineering |
-
----
-
 ## 📄 License & Contact
 Created for **JudgeAI-Benchmark**. All rights reserved. 2026.
 Designed for the next generation of AI developers.
