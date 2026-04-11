@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hackmania")
         endpoint: "https://api.openai.com/v1",
         apiKeyVar: "OPENAI_API_KEY",
         notes: "Default base model"
-    });
+    }); 
 
     // Add FT
     await Model.create({
