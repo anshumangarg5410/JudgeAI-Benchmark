@@ -20,7 +20,7 @@ export default function LoginPage() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Invalid credentials. Try demo@judgeai.io / demo1234');
+      setError(err.message || 'Access Denied. Please use [demo@demo.io] / [demo1234]');
     } finally {
       setLoading(false);
     }
@@ -81,7 +81,15 @@ export default function LoginPage() {
         )}
 
         <div className="login-footer">
-          © 2026 JudgeAI-Benchmark · <a href="#">Privacy</a> · <a href="#">Terms</a>
+          <div style={{ marginBottom: '1rem', color: 'var(--text-dim)', fontSize: '0.8rem' }}>
+            <strong>Submission Demo:</strong> <code>demo@demo.io</code> | <code>demo1234</code>
+          </div>
+          <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>
+            Group Project Submission 2026
+          </div>
+          <p style={{ fontSize: '0.75rem', marginTop: '4px' }}>
+            Anshuman Garg · Navdeesh Kashyap · Rohan Sharma · Reetik Kumar
+          </p>
         </div>
       </div>
     </div>

@@ -21,10 +21,46 @@ const seedDB = async () => {
     } else {
       console.log("No db.json found, using internal defaults for seeding...");
       mockData = {
-        users: [{ email: "admin@hackmania.io", password: "password123", name: "Admin User", role: "admin" }],
+        users: [
+          { email: "demo@demo.io", password: "demo1234", name: "Demo User", role: "admin" },
+          { email: "admin@hackmania.io", password: "password123", name: "Admin User", role: "admin" }
+        ],
         models: [
-          { id: "gpt-4o", name: "GPT-4o", provider: "OpenAI", type: "base", endpoint: "https://api.openai.com/v1", apiKeyVar: "OPENAI_API_KEY" },
-          { id: "gpt-4o-ft", name: "GPT-4o Fine-tuned", provider: "OpenAI", type: "fine-tuned", endpoint: "https://api.openai.com/v1", apiKeyVar: "OPENAI_API_KEY" }
+          { 
+            id: "tinyllama-base", 
+            name: "Ollama Base (TinyLlama)", 
+            provider: "Ollama", 
+            type: "base", 
+            notes: "Standard helpful assistant with no special training." 
+          },
+          { 
+            id: "tinyllama-ft", 
+            name: "Ollama Fine-Tuned (TinyLlama)", 
+            provider: "Ollama", 
+            type: "fine-tuned", 
+            notes: "Professionally trained expert (Legal/Medical/Support instructions applied)." 
+          },
+          { 
+            id: "judgeai-legal", 
+            name: "JudgeAI Legal Expert", 
+            provider: "Ollama", 
+            type: "fine-tuned", 
+            notes: "SYSTEM: Act as a senior legal analyst. Use precise law terminology, cite hypothetical precedents, and maintain a formal, objective tone." 
+          },
+          { 
+            id: "judgeai-medical", 
+            name: "JudgeAI Medical Expert", 
+            provider: "Ollama", 
+            type: "fine-tuned", 
+            notes: "SYSTEM: Act as a clinical board-certified physician. Summarize information using medical nomenclature, prioritize patient safety, and use structured diagnostic logic." 
+          },
+          { 
+            id: "judgeai-support", 
+            name: "JudgeAI Support Expert", 
+            provider: "Ollama", 
+            type: "fine-tuned", 
+            notes: "SYSTEM: Act as a Tier-3 Customer Success manager. Use high empathy, active listening phrases, and prioritize de-escalation while following company protocol." 
+          }
         ],
         settings: [{ singletonId: 1, backendUrl: "http://localhost:8000", regressionThreshold: 0.05, latencyWarning: 2000 }]
       };
@@ -37,33 +73,16 @@ const seedDB = async () => {
         email: u.email, password: u.password, name: u.name, role: u.role
       })));
       console.log(`Successfully seeded ${mockData.users.length} plain-text users.`);
-    } else {
-      console.log("Users already exist or no user data provided, skipping.");
     }
 
-    // Seed Models (Ensure System Defaults always exist)
-    const defaultModels = [
-      { 
-        id: "tinyllama-base", 
-        name: "Ollama Base (TinyLlama)", 
-        provider: "Ollama", 
-        type: "base", 
-        notes: "Standard helpful assistant with no special training." 
-      },
-      { 
-        id: "tinyllama-ft", 
-        name: "Ollama Fine-Tuned (TinyLlama)", 
-        provider: "Ollama", 
-        type: "fine-tuned", 
-        notes: "Professionally trained expert (Legal/Medical/Support instructions applied)." 
-      }
-    ];
+    // Seed Models (Expert Suite)
+    const defaultModels = mockData.models;
 
     for (const dm of defaultModels) {
       const exists = await Model.findOne({ id: dm.id });
       if (!exists) {
         await Model.create(dm);
-        console.log(`Restored system default model: ${dm.name}`);
+        console.log(`Expert Persona Created: ${dm.name}`);
       }
     }
 

@@ -14,6 +14,22 @@ import RadarChart from '../components/charts/RadarChart';
 import ErrorChart from '../components/charts/ErrorChart';
 import { generateInsights } from '../utils/testUtils';
 import './DashboardPage.css';
+import '../styles/ReportStyles.css';
+
+const PrintReportHeader = () => (
+  <div className="report-header-print">
+    <div className="flex flex-between flex-center">
+      <div>
+        <h1 style={{ margin: 0, fontSize: '2rem' }}>JudgeAI-Benchmark</h1>
+        <p className="report-team-names">Group Project: Anshuman Garg, Navdeesh Kashyap, Rohan Sharma, Reetik Kumar</p>
+      </div>
+      <div className="text-right">
+        <p style={{ fontWeight: 600 }}>FINAL EVALUATION REPORT</p>
+        <p style={{ fontSize: '0.8rem', color: '#64748b' }}>Generated on {new Date().toLocaleDateString()}</p>
+      </div>
+    </div>
+  </div>
+);
 
 const CHART_TABS = [
   { key: 'accuracy', label: '📊 Accuracy' },
@@ -60,6 +76,10 @@ export default function DashboardPage() {
   const baseName = baseModel.name;
   const ftName = ftModel.name;
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const metrics = useMemo(() => {
     const bAccAvg = rows.reduce((s, r) => s + r.baseAcc, 0) / rows.length;
     const fAccAvg = rows.reduce((s, r) => s + r.ftAcc, 0) / rows.length;
@@ -83,12 +103,13 @@ export default function DashboardPage() {
 
   return (
     <div className="page-enter">
+      <PrintReportHeader />
       <HeroBanner
-        badge="⚡ Regression Suite v2.5"
-        title="AI Model Regression Testing"
+        badge="🏆 FINAL SUBMISSION READY"
+        title="JudgeAI Evaluation Report"
         subtitle={
           <>
-            Compare base vs fine-tuned model performance — accuracy, latency, regression signals.
+            Group Submission: Anshuman Garg, Navdeesh Kashyap, Rohan Sharma, Reetik Kumar
             &nbsp;·&nbsp;
             <span style={{ color: '#334155', fontSize: '0.8rem', fontFamily: 'var(--font-mono)' }}>
               {now}
@@ -96,7 +117,25 @@ export default function DashboardPage() {
           </>
         }
         user={user}
-      />
+      >
+        <button 
+          className="btn-primary" 
+          onClick={handlePrint}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            background: 'var(--accent-sky)',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            cursor: 'pointer'
+          }}
+        >
+          📥 Export Group Report (PDF)
+        </button>
+      </HeroBanner>
 
       {/* Result Details Modal */}
       {selectedResult && (

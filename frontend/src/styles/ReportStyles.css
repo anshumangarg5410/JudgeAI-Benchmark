@@ -1,0 +1,112 @@
+/**
+ * JudgeAI-Benchmark — Professional Report Print Styles
+ * This stylesheet transforms the dashboard into a clean, multi-page PDF report.
+ */
+
+@media print {
+  /* 1. Hide non-essential UI elements */
+  .sidebar,
+  .sidebar-container,
+  .app-sidebar,
+  .btn-icon,
+  .chart-tabs,
+  .btn-close,
+  .modal-backdrop,
+  .actions-row,
+  .export-btn-container,
+  button:not(.print-only) {
+    display: none !important;
+  }
+
+  /* 2. Reset Layout for Paper */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Inter', system-ui, sans-serif !important;
+  }
+
+  .app-layout {
+    display: block !important;
+  }
+
+  .app-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-enter {
+    padding: 2cm !important;
+  }
+
+  /* 3. Professional Report Header */
+  .report-header-print {
+    display: block !important;
+    border-bottom: 2px solid #334155;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  .report-team-names {
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 0.5rem;
+  }
+
+  /* 4. Cards & Charts */
+  .card, .metric-card {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    break-inside: avoid;
+    margin-bottom: 1rem !important;
+  }
+
+  .metric-value {
+    color: #0f172a !important;
+  }
+
+  .chart-container {
+    height: 400px !important;
+    break-inside: avoid;
+  }
+
+  /* 5. Tables */
+  .reg-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .reg-table th {
+    background: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .reg-table td {
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+  }
+
+  /* Force table rows to stay together */
+  tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Hide scrollbars */
+  .custom-scrollbar {
+    overflow: visible !important;
+  }
+
+  /* Page breaks */
+  .data-table-section {
+    page-break-before: always;
+    margin-top: 2rem;
+  }
+}
+
+/* Screen only components that helper formatting */
+.report-header-print {
+  display: none;
+}
