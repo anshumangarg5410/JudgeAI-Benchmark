@@ -4,6 +4,17 @@ import { useAuth } from '../context/AuthContext';
 import { testApi } from '../services/api';
 import './TestLibraryPage.css';
 
+const PREDEFINED_CATEGORIES = [
+  'Legal Cases',
+  'Medical Care',
+  'Medical Records',
+  'Customer Support Transcripts',
+  'General / Edge Cases',
+  'General',
+  'Logic Puzzles',
+  'Coding'
+];
+
 export default function TestLibraryPage() {
   const { user } = useAuth();
   const [testCases, setTestCases] = useState([]);
@@ -19,7 +30,7 @@ export default function TestLibraryPage() {
 
   // Form State
   const [formData, setFormData] = useState({
-    category: '',
+    category: PREDEFINED_CATEGORIES[0],
     question: '',
     expected: '',
     difficulty: 'medium',
@@ -107,7 +118,7 @@ export default function TestLibraryPage() {
     } else {
       setEditingCase(null);
       setFormData({
-        category: '',
+        category: PREDEFINED_CATEGORIES[0],
         question: '',
         expected: '',
         difficulty: 'medium',
@@ -160,9 +171,9 @@ export default function TestLibraryPage() {
               {categories.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <div className="flex gap-3">
-            <button className="btn-secondary" onClick={() => setIsGenModalOpen(true)}>✨ Generate with AI</button>
-            <button className="btn-primary" onClick={() => openModal()}>➕ Add Manually</button>
+          <div className="lib-btn-group">
+            <button className="btn btn-secondary" onClick={() => setIsGenModalOpen(true)}>✨ Generate with AI</button>
+            <button className="btn btn-primary" onClick={() => openModal()}>➕ Add Manually</button>
           </div>
         </div>
       </div>
@@ -236,12 +247,12 @@ export default function TestLibraryPage() {
               <div className="grid grid-2 gap-4">
                 <div className="form-group">
                   <label>Category</label>
-                  <input 
-                    required 
+                  <select 
                     value={formData.category} 
                     onChange={e => setFormData({...formData, category: e.target.value})}
-                    placeholder="e.g. Legal, Medical..."
-                  />
+                  >
+                    {PREDEFINED_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                 </div>
                 <div className="form-group">
                   <label>Difficulty</label>
@@ -281,9 +292,9 @@ export default function TestLibraryPage() {
                   placeholder="Factuality, Professional Tone, Specific naming..."
                 />
               </div>
-              <div className="modal-actions flex flex-end gap-3 mt-4">
-                <button type="button" className="btn-secondary" onClick={closeModal}>Cancel</button>
-                <button type="submit" className="btn-primary">Save Changes</button>
+              <div className="flex gap-md" style={{ justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Save Changes</button>
               </div>
             </form>
           </div>
@@ -310,11 +321,7 @@ export default function TestLibraryPage() {
                   onChange={e => setGenData({...genData, category: e.target.value})}
                   className="lib-select w-full"
                 >
-                  <option value="Legal Cases">Legal Cases</option>
-                  <option value="Medical Care">Medical Care</option>
-                  <option value="Customer Support">Customer Support</option>
-                  <option value="Logic Puzzles">Logic Puzzles</option>
-                  <option value="Coding">Coding</option>
+                  {PREDEFINED_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
 
@@ -331,7 +338,8 @@ export default function TestLibraryPage() {
 
               <div className="mt-8">
                 <button 
-                  className="btn-primary w-full py-4 text-lg" 
+                  className="btn btn-primary w-full text-lg" 
+                  style={{ padding: '1rem 2rem' }}
                   onClick={handleAIByClick}
                   disabled={isGenerating}
                 >

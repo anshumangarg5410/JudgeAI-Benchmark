@@ -22,12 +22,26 @@
 .lib-select {
   background: var(--bg-main);
   border: 1px solid var(--border-light);
-  padding: 0.6rem 1rem;
+  padding: 0.61rem 1rem;
   border-radius: 8px;
   color: var(--text-main);
+  font-family: var(--font-sans);
 }
 
-.lib-table-wrapper {
+.lib-btn-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-primary, .btn-secondary {
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.btn-primary {
+  color: #ffffff !important;
+}
   overflow: hidden;
   padding: 0;
 }
@@ -104,26 +118,74 @@
   border-color: #ef4444;
 }
 
-/* Modals */
-.lib-modal {
-  max-width: 600px;
-  width: 90%;
+/* Modals & Forms */
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-content input, 
+.modal-content textarea, 
+.modal-content select {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-secondary) !important;
+  color: var(--text-primary) !important;
+  padding: 0.8rem 1rem !important;
+  border-radius: 8px !important;
+  font-family: var(--font-sans) !important;
+  width: 100%;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.modal-content input:focus, 
+.modal-content textarea:focus {
+  border-color: var(--accent-sky) !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1) !important;
+}
+
+.modal-content label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Button Overrides */
+.btn-primary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  border: 1px solid var(--accent-sky) !important;
+  color: var(--accent-sky) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.btn-primary:hover {
+  background: var(--accent-sky) !important;
+  color: #000 !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4) !important;
+}
+
+.btn-secondary {
+  background: transparent !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-muted) !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: var(--border-hover) !important;
+  color: var(--text-primary) !important;
 }
 
 .gen-modal {
-  max-width: 450px;
-  width: 90%;
-  text-align: center;
+  max-width: 480px;
 }
 
-.gen-modal label {
-  text-align: left;
-}
-
-.spinner-white {
-  border-top-color: white;
-  width: 20px;
-  height: 20px;
+.modal-body {
+  padding: 2rem !important;
 }
 
 @media (max-width: 1024px) {

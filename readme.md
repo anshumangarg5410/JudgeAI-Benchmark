@@ -45,13 +45,14 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 - Define "Individual Personalities" for each model in the database.
 - Instantly switch between models for comparative analysis.
 
-### 3. **High-Fidelity Dashboard**
+### 3. **High-Fidelity Dashboard & UI Engine**
+- **Stealth Mode Aesthetics**: Deep tertiary backgrounds, 'Stealth Cyan' button glows, and a perfectly balanced dark mode.
+- **Glassmorphism Modals**: Centered overlay command centers built with `backdrop-filter: blur()`.
 - **Live Feed**: Watch the AI think and evaluate in real-time.
 - **Comparison Modal**: A side-by-side view designed for developers.
-- **Status Badges**: Instant visual feedback (PASS/FAIL/DELTA).
-- **Protected Routes**: Secure login system with session persistence across page refreshes.
+- **Strict Data Consistency**: Pre-defined category enforcement (Legal, Medical, Support) across both manual inputs and AI generation.
 - **Expert Suite**: Switch between specialized AI personalities at the press of a button.
-- **AI Generator**: A specialized modal to bulk-create 1-10 test cases in seconds.
+- **AI Generator**: A specialized modal to bulk-create 1-10 domain-specific test cases in seconds.
 
 ---
 
