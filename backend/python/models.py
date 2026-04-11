@@ -6,7 +6,7 @@ import json
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
 BASE_MODEL_NAME = os.getenv("BASE_MODEL", "tinyllama")       
 FINE_MODEL_NAME = os.getenv("FINE_MODEL", "tinyllama")      
-JUDGE_MODEL_NAME = os.getenv("JUDGE_MODEL", "mistral") # Use a smarter model as Judge
+JUDGE_MODEL_NAME = os.getenv("JUDGE_MODEL", "mistral") 
 
 
 def call_model(model_name, prompt):
@@ -24,9 +24,7 @@ def call_model(model_name, prompt):
 def base_model(question, instructions=""):
     system_task = instructions if instructions else "Answer the question directly."
     prompt = f"""Task: {system_task}
-Constraint 1: Do NOT include any prefixes like "Assistant:", "Answer:", or "Response:".
-Constraint 2: Do NOT repeat the question.
-Constraint 3: Do NOT chat or engage in meta-talk. Just provide the answer.
+    Answer this question
 
 Question: {question}
 """
@@ -36,9 +34,7 @@ Question: {question}
 def fine_tuned_model(question, instructions=""):
     system_task = instructions if instructions else "You are a professional expert (Legal/Medical/Support)."
     prompt = f"""Task: {system_task}
-Constraint 1: Answer only. No meta-talk. 
-Constraint 2: Do NOT include prefixes like "Assistant:", "Answer:", or "Question:".
-Constraint 3: If the question is about data extraction or a transcript, do NOT continue the transcript. Just provide the requested answer.
+    Answer this question 
 
 Question: {question}
 """
@@ -75,3 +71,6 @@ Respond ONLY in this JSON format:
         "score": 5 if "true" in res.lower() else 0,
         "explanation": "Regex fallback evaluation"
     }
+
+def generate_text(prompt):
+    return call_model(JUDGE_MODEL_NAME, prompt)

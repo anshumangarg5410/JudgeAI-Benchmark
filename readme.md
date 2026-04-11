@@ -16,6 +16,8 @@
 - **🔐 Secure Sessions**: JWT-based session management with protected routes.
 - **📥 One-Click Reporting**: Built-in PDF export engine to generate professional evaluation summaries for hand-ins.
 - **🎭 Expert Personas**: Pre-configured specialized models (Legal Expert, Medical Doctor, Support Expert).
+- **📚 AI Test Factory**: One-click benchmark generation. Instantly grow your library with domain-specific evaluation cases using local AI.
+- **🛠️ Benchmark Library**: Full CRUD control over your test datasets with difficulty tagging and evaluation criteria management.
 
 ---
 
@@ -49,6 +51,7 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 - **Status Badges**: Instant visual feedback (PASS/FAIL/DELTA).
 - **Protected Routes**: Secure login system with session persistence across page refreshes.
 - **Expert Suite**: Switch between specialized AI personalities at the press of a button.
+- **AI Generator**: A specialized modal to bulk-create 1-10 test cases in seconds.
 
 ---
 

@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from models import base_model, fine_tuned_model, judge_model
+from models import base_model, fine_tuned_model, judge_model, generate_text
 from evaluator import evaluate
 
 app = Flask(__name__)
@@ -65,6 +65,41 @@ def run_eval():
         "base": base_results,
         "fine": ft_results
     })
+
+
+# ---------------- AI GENERATION ----------------
+import json
+@app.route("/generate", methods=["POST"])
+def generate():
+    category = request.json.get("category", "General")
+    count = request.json.get("count", 3)
+    
+    prompt = f"""Act as a benchmarking expert. Generate exactly {count} professional evaluation test cases for the '{category}' category.
+    Return ONLY a valid JSON array of objects.
+    Each object MUST have:
+    - "category": "{category}"
+    - "question": "The test prompt/question"
+    - "expected": "The ideal baseline response"
+    - "difficulty": one of ["easy", "medium", "hard"]
+    - "evaluationCriteria": ["list", "of", "criteria"]
+    
+    JSON:"""
+    
+    raw_response = generate_text(prompt)
+    
+    # Attempt to clean potential markdown triple backticks if present
+    clean_json = raw_response.strip()
+    if clean_json.startswith("```json"):
+        clean_json = clean_json[7:-3].strip()
+    elif clean_json.startswith("```"):
+        clean_json = clean_json[3:-3].strip()
+
+    try:
+        data = json.loads(clean_json)
+        return jsonify(data)
+    except Exception as e:
+        print(f"JSON Parse Error: {e}\nRaw: {raw_response}")
+        return jsonify({"error": "Failed to generate valid JSON", "raw": raw_response}), 500
 
 
 # ---------------- RUN SERVER ----------------

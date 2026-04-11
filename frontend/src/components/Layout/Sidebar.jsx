@@ -6,6 +6,7 @@ import './Sidebar.css';
 const NAV_ITEMS = [
   { path: '/dashboard', icon: '🏠', label: 'Dashboard' },
   { path: '/run-tests', icon: '▶️', label: 'Run Tests' },
+  { path: '/library', icon: '📚', label: 'Test Library' },
   { path: '/models', icon: '🧩', label: 'Model Registry' },
   { path: '/history', icon: '📋', label: 'Run History' },
   { path: '/analytics', icon: '📊', label: 'Analytics' },

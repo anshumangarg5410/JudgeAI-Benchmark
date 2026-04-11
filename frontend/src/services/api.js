@@ -79,6 +79,17 @@ export const modelsApi = {
 };
 
 // ════════════════════════════════════════════════════════════════
+// TESTCASES
+// ════════════════════════════════════════════════════════════════
+export const testApi = {
+  getTestcases: () => client.get('/testcases').then(handleResponse).catch(handleError),
+  createTestcase: (data) => client.post('/testcases', data).then(handleResponse).catch(handleError),
+  updateTestcase: (id, data) => client.put(`/testcases/${id}`, data).then(handleResponse).catch(handleError),
+  deleteTestcase: (id) => client.delete(`/testcases/${id}`).then(handleResponse).catch(handleError),
+  generateTestcases: (category, count) => client.post('/testcases/generate', { category, count }).then(handleResponse).catch(handleError),
+};
+
+// ════════════════════════════════════════════════════════════════
 // RUNS
 // ════════════════════════════════════════════════════════════════
 export const runsApi = {

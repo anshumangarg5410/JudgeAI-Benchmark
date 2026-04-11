@@ -10,6 +10,7 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const RunTestsPage = lazy(() => import('./pages/RunTestsPage'));
 const ModelRegistryPage = lazy(() => import('./pages/ModelRegistryPage'));
+const TestLibraryPage = lazy(() => import('./pages/TestLibraryPage'));
 const HistoryPage = lazy(() => import('./pages/HistoryPage'));
 const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
@@ -85,6 +86,7 @@ export default function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/run-tests" element={<RunTestsPage />} />
+                <Route path="/library" element={<TestLibraryPage />} />
                 <Route path="/models" element={<ModelRegistryPage />} />
                 <Route path="/history" element={<HistoryPage />} />
                 <Route path="/analytics" element={<AnalyticsPage />} />
