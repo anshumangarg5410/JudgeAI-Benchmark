@@ -13,7 +13,9 @@
 - **⚡ On-the-Fly Training**: A "Dynamic Personality" engine that simulates fine-tuning via real-time system instruction injection.
 - **🖼️ Deep-Dive Analytics**: Side-by-side comparison modals with monospace typography for pixel-perfect response analysis.
 - **🛡️ Regression Guard**: Real-time delta tracking (↑/↓) to ensure your fine-tuning doesn't break basic model capabilities.
-- **🔐 Secure Sessions**: Industry-standard JWT (JSON Web Token) authentication to protect model registries and test results.
+- **🔐 Secure Sessions**: JWT-based session management with protected routes.
+- **📥 One-Click Reporting**: Built-in PDF export engine to generate professional evaluation summaries for hand-ins.
+- **🎭 Expert Personas**: Pre-configured specialized models (Legal Expert, Medical Doctor, Support Expert).
 
 ---
 
@@ -46,6 +48,7 @@ Instead of manual grading, JudgeAI-Benchmark uses a "Teacher Model" to grade the
 - **Comparison Modal**: A side-by-side view designed for developers.
 - **Status Badges**: Instant visual feedback (PASS/FAIL/DELTA).
 - **Protected Routes**: Secure login system with session persistence across page refreshes.
+- **Expert Suite**: Switch between specialized AI personalities at the press of a button.
 
 ---
 
@@ -106,13 +109,20 @@ cd backend/python && pip install flask axios ollama && python server.py
 cd frontend && npm install && npm run dev
 ```
 
-### 🔑 Demo Credentials
-Access the platform with these pre-seeded accounts:
-- **Username**: `admin@hackmania.io`
-- **Password**: `password123`
+### 🔑 Final Submission Credentials
+Access the platform via the primary demo account:
+- **Email**: `demo@demo.io`
+- **Password**: `demo1234`
+
+*Note: You can also use `admin@hackmania.io` / `password123` for administrative testing.*
 
 ---
 
-## 📄 License & Contact
-All rights reserved. 2026.
-Designed for the next generation of AI developers.
+## 👥 The JudgeAI Team
+This project was developed for the **Final Group Submission 2026** by:
+- **Anshuman Garg** 
+- **Navdeesh Kashyap** 
+- **Rohan Sharma** 
+- **Reetik Kumar**
+
+Designed for the next generation of AI developers. ⚖️🚀🏆
