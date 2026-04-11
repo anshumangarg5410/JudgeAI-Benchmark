@@ -118,11 +118,4 @@ Access the platform via the primary demo account:
 
 ---
 
-## 👥 The JudgeAI Team
-This project was developed for the **Final Group Submission 2026** by:
-- **Anshuman Garg** 
-- **Navdeesh Kashyap** 
-- **Rohan Sharma** 
-- **Reetik Kumar**
-
 Designed for the next generation of AI developers. ⚖️🚀🏆
